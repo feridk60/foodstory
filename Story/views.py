@@ -5,6 +5,7 @@ from Story.forms import StoryCommentFormModel
 from django.contrib.auth.decorators import login_required
 from Story.models import Category, Comment, Story, Tag
 from datetime import date, datetime
+from django.contrib import messages
 
 # Create your views here.
 
@@ -108,3 +109,5 @@ def story_detail(request,id):
    
 
    return render(request,'single.html',context)
+
+

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,6 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -68,6 +71,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'Account.context_processors.footer_info',
             ],
         },
     },
@@ -143,3 +148,49 @@ AUTH_USER_MODEL = 'Account.CustomUser'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+
+
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Mənim Admin Panelim",  # Brauzer sekmesinde görsənəcək ad
+    "site_header": "Mənim Adminim",  # Admin başlığı
+    "site_brand": "Brand Adı",  # Admin panelinin yuxarısında göstəriləcək brend
+    "welcome_sign": "Xoş gəlmisiniz!",  # Admin girişində göstərilən mesaj
+    "copyright": "© 2024 Mənim Şirkətim",  # Panelin aşağı hissəsində copyright məlumatı
+    "topmenu_links": [  # Üst menyuya linklər əlavə etmək üçün
+        {"name": "Ana Səhifə", "url": "/", "permissions": ["auth.view_user"]},
+        {"app": "auth"},  # "auth" tətbiqinə keçid
+    ],
+    "usermenu_links": [  # İstifadəçi menyusuna keçidlər əlavə etmək üçün
+        {"name": "Profilim", "url": "/profile", "new_window": True},
+    ],
+    "show_sidebar": True,  # Yan menyunun göstərilib-göstərilməməsi
+    "navigation_expanded": True,  # Menyuların avtomatik genişlənməsi
+    "hide_apps": ["sessions"],  # Göstərilməyəcək tətbiqlər
+    "hide_models": ["auth.Group"],  # Göstərilməyəcək modellər
+}
+
+JAZZMIN_SETTINGS["changeform_format"] = "horizontal_tabs"
+JAZZMIN_SETTINGS["changeform_format_overrides"] = {"auth.user": "collapsible"}
+JAZZMIN_UI_TWEAKS = {
+    "theme": "cerulean",  # Mövcud bootstrap temaları: cerulean, cosmo, flatly, və s.
+    "dark_mode_theme": "cosmo",  # Tünd tema üçün
+    "navbar_small_text": True,
+    "body_small_text": True,
+    "accent": "accent-primary",
+    "button_classes": {"primary": "btn-outline-primary", "secondary": "btn-outline-secondary"},
+}
+JAZZMIN_SETTINGS["custom_css"] = "css/custom.css"
+
+
+# Yalnız inkişaf mühiti üçün e-poçtları konsola yazdırın
+# settings.py - E-poçt Göndərmə Ayarları
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Gmail SMTP serveri
+EMAIL_PORT = 587  # TLS üçün port
+EMAIL_USE_TLS = True  # TLS şifrələməsindən istifadə et
+EMAIL_HOST_USER = 'your_email@gmail.com'  # Gmail istifadəçi adı
+EMAIL_HOST_PASSWORD = 'your_email_password'  # Gmail şifrəniz (2FA istifadə edirsinizsə, tətbiq şifrəsi istifadə edin)
+DEFAULT_FROM_EMAIL = 'your_email@gmail.com'  # Göndərən e-poçt ünvanı

@@ -1,6 +1,11 @@
+from datetime import date
 from django.shortcuts import redirect, render
 from django.contrib import messages
+from django.views.generic import ListView
+from django.shortcuts import get_object_or_404
+from Story.models import Category, Story
 from .forms import ContactForm
+from datetime import date
 
 from Core.models import Slider,Contact
 
@@ -10,12 +15,40 @@ from Core.models import Slider,Contact
 def index(request):
 
     sliders=Slider.objects.all()
+    categories=Category.objects.all()
 
     context={
-        'sliders':sliders
+        'sliders':sliders,
+        'categories':categories,
     }
 
     return render(request,'index.html', context)
+
+
+
+
+
+
+class LatestStoryListView(ListView):
+    
+    model = Story
+    template_name = "index.html"
+    context_object_name = "stori"
+
+    def get_queryset(self):
+        
+        return Story.objects.filter(
+            category__is_active=True,
+            show_date__lte=date.today()
+        ).order_by('-show_date')[:3]
+
+    def get_context_data(self, **kwargs):
+        
+        context = super().get_context_data(**kwargs)
+        context['categor'] = Category.objects.filter(is_active=True)
+        return context
+
+
 
 
 

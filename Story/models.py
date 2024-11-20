@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+from Account.models import CustomUser
+
 
 User=get_user_model()
 
@@ -71,7 +73,7 @@ class Category(models.Model):
 
 class Comment(models.Model):
     message = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     story = models.ForeignKey(Story, on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -82,4 +84,4 @@ class Comment(models.Model):
 
     class Meta:
         verbose_name = 'Story Comment'
-        verbose_name_plural = 'Story Comment'
+        verbose_name_plural = 'Story Comments'

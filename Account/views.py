@@ -5,7 +5,18 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 # from django.contrib.auth.views import PasswordChangeView,PasswordResetView,PasswordResetConfirmView
 # from .forms import ChangePasswordForm,ResetPasswordForm,CustomSetPasswordForm
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlencode
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib.auth.tokens import default_token_generator
 
+def send_test_email():
+    subject = 'Test E-poçt'
+    message = 'Bu, Django tətbiqindən göndərilən test e-poçtudur.'
+    recipient_list = ['recipient_email@example.com']
+
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list)
 
 
 
@@ -44,26 +55,38 @@ def login_view(request):
 
 
 
+
+
+
+
 def register_view(request):
-    form=RegistrationForm()
-
     if request.method == 'POST':
-
-        form=RegistrationForm(request.POST)
+        form = RegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False
-            user.save()
-        else:
-            return redirect('register')    
-        return redirect('login')    
+            
+            password1 = form.cleaned_data.get('password1')
+            password2 = form.cleaned_data.get('password2')
 
+            if password1 and password2 and password1 == password2:
+                user = form.save(commit=False)
+                user.set_password(password1)  
+                user.is_active = False  
+                user.save()
+
+                
+                subject = "Qeydiyyatınız Təsdiq Edildi"
+                message = "Qeydiyyatınız uğurla tamamlandı. Hesabınızı aktivləşdirmək üçün linki izləyin."
+                recipient_list = [user.email]
+
+                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list)
+                
+                return redirect('login')  
+       
+        return render(request, 'accounts/register.html', {'form': form})
     
-    context = {
-        'form': form
-    }
+    form = RegistrationForm()
+    return render(request, 'accounts/register.html', {'form': form})
 
-    return render(request,'accounts/register.html',context)
 
 
 
@@ -91,6 +114,35 @@ def register_view(request):
 # class ResetPasswordConfirmView(PasswordResetConfirmView):
 #     template_name='reset_password_confirm.html'
 #     form_class=CustomSetPasswordForm
-#     success_url = reverse_lazy('reset_password_complete')    
+#     success_url = reverse_lazy('reset_password_complete')  
 
 
+
+
+
+
+
+
+# Bu kod, e-poçt ünvanı ilə istifadəçi doğrulaması həyata keçirmək üçün bir xüsusi authentication backend 
+# (kimlik doğrulama arxa ucu) yaradır. Bu sinif, Django-nun standart authenticate funksiyasını dəyişdirir və 
+# istifadəçini yalnızca e-poçt ünvanı və şifrə ilə doğrulamağı təmin edir.
+
+
+# from django.contrib.auth.backends import ModelBackend
+# from django.contrib.auth.models import User
+
+# class EmailAuthBackend(ModelBackend):
+#     def authenticate(self, request, username=None, password=None, **kwargs):
+#         try:
+#             user = User.objects.get(email=username)  
+#             if user.check_password(password):
+#                 return user
+#         except User.DoesNotExist:
+#             return None
+
+
+# settings.py
+# AUTHENTICATION_BACKENDS = [
+#     'myapp.backends.EmailAuthBackend',  
+#     'django.contrib.auth.backends.ModelBackend',
+# ]

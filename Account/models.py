@@ -27,6 +27,9 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
+    bio = models.TextField(null=True, blank=True)  # Bio sahəsi
+    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+    full_name = models.CharField(max_length=255, null=True, blank=True)
     username = models.CharField(max_length=50, blank=True)
     first_name = models.CharField(max_length=50, blank=True)
     last_name = models.CharField(max_length=50, blank=True)
@@ -38,5 +41,5 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'  # Giriş üçün email istifadə olunur
     REQUIRED_FIELDS = ['full_name']  # Email-dən başqa tələb olunan sahələr
 
-    def __str__(self):
-        return self.email
+    def get_username(self):
+        return self.username
