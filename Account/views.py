@@ -2,21 +2,16 @@ from django.shortcuts import redirect, render
 from Account.forms import LoginForm, RegistrationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-# from django.contrib.auth.views import PasswordChangeView,PasswordResetView,PasswordResetConfirmView
-# from .forms import ChangePasswordForm,ResetPasswordForm,CustomSetPasswordForm
+from django.contrib.auth.views import PasswordChangeView,PasswordResetView,PasswordResetConfirmView
+from .forms import ChangePasswordForm, CustomSetPasswordForm, ResetPasswordForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlencode
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.tokens import default_token_generator
 
-def send_test_email():
-    subject = 'Test E-poçt'
-    message = 'Bu, Django tətbiqindən göndərilən test e-poçtudur.'
-    recipient_list = ['recipient_email@example.com']
-
-    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list)
 
 
 
@@ -54,11 +49,6 @@ def login_view(request):
 
 
 
-
-
-
-
-
 def register_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -88,33 +78,46 @@ def register_view(request):
     return render(request, 'accounts/register.html', {'form': form})
 
 
+def send_test_email():
+    subject = 'Test E-poçt'
+    message = 'Bu, Django tətbiqindən göndərilən test e-poçtudur.'
+    recipient_list = ['recipient_email@example.com']
 
-
-# class ChangePasswordView(PasswordChangeView):
-#     template_name='change_password.html'
-#     form_class= ChangePasswordForm
-#     success_url = reverse_lazy('login')
-
-
-
-# class ResetPasswordView(PasswordResetView):
-#     template_name = 'forget_pwd.html'
-#     form_class = ResetPasswordForm
-#     email_template_name = 'reset_password_email.html'
-#     subject_template_name = 'reset_password_subject.txt'
-#     success_message = "We've emailed you instructions for setting your password, " \
-#                       "if an account exists with the email you entered. You should receive them shortly." \
-#                       "If you don't receive an email, " \
-#                       "please make sure you've entered the address you registered with, and check your spam folder."
-
-#     success_url = reverse_lazy('login')   
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list)
 
 
 
-# class ResetPasswordConfirmView(PasswordResetConfirmView):
-#     template_name='reset_password_confirm.html'
-#     form_class=CustomSetPasswordForm
-#     success_url = reverse_lazy('reset_password_complete')  
+
+class ChangePasswordView(LoginRequiredMixin, PasswordChangeView):
+    template_name='accounts/change_password.html'
+    form_class= ChangePasswordForm
+    success_url = reverse_lazy('login')
+
+
+
+
+
+
+
+
+class ResetPasswordView(PasswordResetView):
+    template_name = 'accounts/forget_password.html'
+    form_class = ResetPasswordForm
+    email_template_name = 'accounts/reset_password_email.html'
+    subject_template_name = 'accounts/reset_password_subject.txt'
+    success_message = "We've emailed you instructions for setting your password, " \
+                      "if an account exists with the email you entered. You should receive them shortly." \
+                      "If you don't receive an email, " \
+                      "please make sure you've entered the address you registered with, and check your spam folder."
+
+    success_url = reverse_lazy('login')   
+
+
+
+class ResetPasswordConfirmView(PasswordResetConfirmView):
+    template_name='accounts/reset_password_confirm.html'
+    form_class=CustomSetPasswordForm
+    success_url = reverse_lazy('reset_password_complete')  
 
 
 

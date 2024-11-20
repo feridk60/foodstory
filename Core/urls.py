@@ -1,7 +1,7 @@
 
 from django.urls import path
 
-from .views import  about, changepassword, contact, create, forgetpassword,index,  recipe, reset_password, single, LatestStoryListView,  subscribers, userprofile
+from .views import  about, contact, create, index,  recipe, single, LatestStoryListView,  subscribers, userprofile
 
 urlpatterns = [
     
@@ -15,8 +15,6 @@ urlpatterns = [
     path('single/',single,name='single'),
     path('userprofile/',userprofile,name='userprofile'),
     path('recipes_list/',recipe,name='recipes_list'),
-    path('changepassword/',changepassword,name='changepassword'),
-    path('forgetpassword/',forgetpassword,name='forgetpassword'),
-    path('rst_password/',reset_password,name='rst_password'), 
+    
 ]
 

@@ -110,21 +110,3 @@ def userprofile(request):
 
 
 
-def changepassword(request):
-    return render(request,'accounts/change_password.html')
-
-
-
-
-
-def forgetpassword(request):
-    return render(request,'accounts/forget_password.html')
-
-
-
-
-
-
-
-def reset_password(request):
-    return render(request,'accounts/reset_password.html')

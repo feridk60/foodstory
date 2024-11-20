@@ -1,7 +1,7 @@
 from django import forms
 from Account.models import CustomUser
 from django.core.exceptions import ValidationError
-# from django.contrib.auth.forms import PasswordChangeForm,PasswordResetForm,SetPasswordForm
+from django.contrib.auth.forms import PasswordChangeForm,PasswordResetForm,SetPasswordForm
 
 
 
@@ -85,51 +85,51 @@ class RegistrationForm(forms.ModelForm):
         
        
             
-# class ChangePasswordForm(PasswordChangeForm):
-#     old_password = forms.CharField(required=True, label='Old Password',
-#         widget=forms.PasswordInput(
-#             attrs={
-#                 'class': 'form-control',
-#                 'placeholder': 'Your Old Password'
-#             }))
-#     new_password1 = forms.CharField(required=True, label='New Password',
-#         widget=forms.PasswordInput(
-#             attrs={
-#                 'class': 'form-control',
-#                 'placeholder': 'Your New Password'
-#             }))
-#     new_password2 = forms.CharField(required=True, label='Confirm New Password',
-#         widget=forms.PasswordInput(
-#             attrs={
-#                 'class': 'form-control',
-#                 'placeholder': 'Confirm Your New Password'
-#             }))         
+class ChangePasswordForm(PasswordChangeForm):
+    old_password = forms.CharField(required=True, label='Old Password',
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Your Old Password'
+            }))
+    new_password1 = forms.CharField(required=True, label='New Password',
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Your New Password'
+            }))
+    new_password2 = forms.CharField(required=True, label='Confirm New Password',
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Confirm Your New Password'
+            }))         
         
 
 
 
 
-# class ResetPasswordForm(PasswordResetForm):
-#     email = forms.EmailField(
-#         widget=forms.EmailInput(
-#             attrs={
-#                 'class': 'form-control',
-#                 'placeholder' : 'Enter Your E-mail'
-#             }
-#         )
-#     )
+class ResetPasswordForm(PasswordResetForm):
+    email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder' : 'Enter Your E-mail'
+            }
+        )
+    )
 
 
-# class CustomSetPasswordForm(SetPasswordForm):
-#     new_password1 = forms.CharField(required=True, label='New Password',
-#         widget=forms.PasswordInput(
-#             attrs={
-#                 'class': 'form-control',
-#                 'placeholder': 'Your New Password'
-#             }))
-#     new_password2 = forms.CharField(required=True, label='Confirm New Password',
-#         widget=forms.PasswordInput(
-#             attrs={
-#                 'class': 'form-control',
-#                 'placeholder': 'Confirm Your New Password'
-#             }))
+class CustomSetPasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(required=True, label='New Password',
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Your New Password'
+            }))
+    new_password2 = forms.CharField(required=True, label='Confirm New Password',
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Confirm Your New Password'
+            }))
