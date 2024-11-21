@@ -1,7 +1,7 @@
 
 from django.urls import path
 
-from .views import  about, contact, create, index,  recipe, single, LatestStoryListView,  subscribers, userprofile
+from .views import  about, contact, create, index,  recipe, send_email_view, single, LatestStoryListView, userprofile
 
 urlpatterns = [
     
@@ -9,7 +9,7 @@ urlpatterns = [
     path('about_list/',about,name='about_list'),
     path('contact/', contact, name='contact'),
     path('create/',create,name='create'),
-    path('subscribers/',subscribers,name='subscribers'),
+    path('send-emails/', send_email_view, name='send_email_view'),
     path('',index,name='index_lists'),
     path('',LatestStoryListView.as_view() , name='index_lists'),
     path('single/',single,name='single'),

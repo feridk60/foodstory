@@ -1,5 +1,7 @@
 from django.db import models
 
+
+
 # Create your models here.
 
 
@@ -36,5 +38,27 @@ class Contact(models.Model):
     class Meta:
         verbose_name='Contact'
         verbose_name_plural='Contacts'
+
+
+
     
+
+
+class DateMixin(models.Model):
     
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+class Subscriber(DateMixin):
+    email = models.EmailField(max_length=200, unique=True)  
+    is_active = models.BooleanField(default=True)  
+
+    def __str__(self):
+        return self.email
+
+    class Meta:
+        verbose_name = 'Subscriber'
+        verbose_name_plural = 'Subscribers'

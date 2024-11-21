@@ -6,8 +6,10 @@ from django.shortcuts import get_object_or_404
 from Story.models import Category, Story
 from .forms import ContactForm
 from datetime import date
-
 from Core.models import Slider,Contact
+from django.http import HttpResponse
+from Story.models import Story
+from .utils import send_email_to_subscribers  
 
 # Create your views here.
 
@@ -82,8 +84,21 @@ def create(request):
 
 
 
-def subscribers(request):
-    return render(request,'email-subscribers.html')
+
+
+
+
+def send_email_view(request):
+    
+    storyp = Story.objects.all()[:3]
+
+    
+    send_email_to_subscribers(
+        subject="Yeni Ürünler Web Sitemizden", 
+        context={"storyp": storyp}
+    )
+
+    return HttpResponse("E-postalar gönderildi.")
 
 
 
