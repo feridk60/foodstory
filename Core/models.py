@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.db import models
+
 
 
 
@@ -53,6 +55,7 @@ class DateMixin(models.Model):
         abstract = True
 
 class Subscriber(DateMixin):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     email = models.EmailField(max_length=200, unique=True)  
     is_active = models.BooleanField(default=True)  
 

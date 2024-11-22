@@ -4,12 +4,15 @@ from django.contrib import messages
 from django.views.generic import ListView
 from django.shortcuts import get_object_or_404
 from Story.models import Category, Story
-from .forms import ContactForm
+from .forms import ContactForm, SubscriberForm
 from datetime import date
 from Core.models import Slider,Contact
 from django.http import HttpResponse
 from Story.models import Story
-from .utils import send_email_to_subscribers  
+from .utils import send_email_to_subscribers
+from datetime import datetime
+datetime.now()
+
 
 # Create your views here.
 
@@ -91,14 +94,20 @@ def create(request):
 def send_email_view(request):
     
     storyp = Story.objects.all()[:3]
-
+    if request.method == 'POST':
+        form = SubscriberForm(request.POST)
+        if form.is_valid():
+            form.save()  # Aboneliği kaydet
+            send_email_to_subscribers(
+                subject="Yeni Ürünler Web Sitemizden", 
+                context={"storyp": storyp}  # Storyp'yi e-posta içeriği olarak gönder
+            )
+            return HttpResponse("E-postalar gönderildi.")
+    else:
+        form = ContactForm()  # Boş formu render et
     
-    send_email_to_subscribers(
-        subject="Yeni Ürünler Web Sitemizden", 
-        context={"storyp": storyp}
-    )
-
-    return HttpResponse("E-postalar gönderildi.")
+    # Sayfayı render et
+    return render(request, 'index.html', {'form': form})
 
 
 
