@@ -1,7 +1,7 @@
 
 from django.urls import path
 
-from .views import  about, contact, create, index,  recipe, send_email_view, single, LatestStoryListView, userprofile
+from .views import  about, contact, create, index, recentstory,  recipe, send_email_view, single, LatestStoryListView, userprofile
 
 urlpatterns = [
     
@@ -15,6 +15,7 @@ urlpatterns = [
     path('single/',single,name='single'),
     path('userprofile/',userprofile,name='userprofile'),
     path('recipes_list/',recipe,name='recipes_list'),
+    path('recentstory/',recentstory,name='recentstory'),
     
 ]
 

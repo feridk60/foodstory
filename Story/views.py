@@ -37,6 +37,9 @@ def story(request):
 
 
 
+
+
+
 class StoryList(ListView):
     model = Story
     template_name = 'stories.html'

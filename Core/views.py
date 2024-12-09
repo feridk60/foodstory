@@ -8,7 +8,7 @@ from .forms import ContactForm, SubscriberForm
 from datetime import date
 from Core.models import Slider,Contact
 from django.http import HttpResponse
-from Story.models import Story
+from Story.models import Story,Category
 from .utils import send_email_to_subscribers
 from datetime import datetime
 datetime.now()
@@ -20,14 +20,32 @@ datetime.now()
 def index(request):
 
     sliders=Slider.objects.all()
-    categories=Category.objects.all()
+    
 
     context={
         'sliders':sliders,
-        'categories':categories,
+        
     }
 
     return render(request,'index.html', context)
+
+
+def recentstory(request):
+
+    recentstory=Story.objects.all()
+    categories=Category.objects.all()
+    
+
+    context={
+        'recentstory':recentstory,
+        'categories':categories,
+        
+    }
+
+    return render(request,'index.html', context)
+
+
+
 
 
 

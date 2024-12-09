@@ -42,17 +42,17 @@
             </div>
             
             <div class="row">
-                {% for str in stori %}
+                {% for recent in recentstory %}
                 <div class="col-md-6 order-md-last col-lg-6 ftco-animate">
                     <div class="blog-entry">
-                        <div class="img img-big d-flex align-items-end" style="background-image: url({{ str.image.url }});">
+                        <div class="img img-big d-flex align-items-end" style="background-image: url({{ recent.image.url }});">
                             <div class="overlay"></div>
                             <div class="text">
                                 
-                                <span class="subheading">{{ str.category.name }}</span>
+                                <span class="subheading">{{ recent.category.name }}</span>
                                 
                                 
-                                <h3><a href="{% url 'single' str.id %}">{{ str.title }}</a></h3>
+                                <h3><a href="">{{ recent.title }}</a></h3>
                                 
                                 
                                 <p class="mb-0">
